@@ -1,47 +1,36 @@
-from flask import Flask,request,jsonify,render_template
-import os
-from flask_cors import CORS,cross_origin
+import streamlit as st
 from cnnClassifier.utils.common import decodeImage
 from cnnClassifier.pipeline.prediction import PredictionPipeline
+import os
 
-os.putenv('LANG','en_US.UTF-8')
-os.putenv('LC_ALL','en_US.UTF-8')
-
-app=Flask(__name__)
-
-CORS(app)
-
+# Initialize your app
+os.putenv('LANG', 'en_US.UTF-8')
+os.putenv('LC_ALL', 'en_US.UTF-8')
 
 class ClientApp:
     def __init__(self):
-        self.filename="inputImage.jpg"
+        self.filename = "inputImage.jpg"
         self.classifier = PredictionPipeline(self.filename)
 
-@app.route("/",methods=['GET'])
-@cross_origin()
-def home():
-    return render_template('index.html')
+clApp = ClientApp()
 
+# Streamlit UI
+st.title("Image Classification with CNN")
 
-@app.route("/train", methods=['GET','POST'])
-@cross_origin()
-def trainRoute():
-    #os.system("python main.py")
-    os.system("dvc repro")
-    return "Training done successfully!"
+st.write("Upload an image to classify:")
 
+# File uploader to allow users to upload an image
+uploaded_file = st.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"])
 
-
-@app.route("/predict", methods=['POST'])
-@cross_origin()
-def predictRoute():
-    image = request.json['image']
-    decodeImage(image, clApp.filename)
-    clApp.classifier.model_copy()
-    result = clApp.classifier.predict()
-    return jsonify(result)
-
-
-if __name__ == "__main__":
-    clApp = ClientApp()
-    app.run(host='0.0.0.0', port=8080)
+if uploaded_file is not None:
+    # Save uploaded image to a file
+    with open(clApp.filename, "wb") as f:
+        f.write(uploaded_file.getbuffer())
+    
+    # Display the image
+    st.image(uploaded_file, caption="Uploaded Image.", use_column_width=True)
+    
+    # Predict button
+    if st.button("Classify Image"):
+        result = clApp.classifier.predict()
+        st.write(f"Prediction: {result}")
