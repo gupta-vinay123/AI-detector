@@ -17,7 +17,7 @@ class PrepareBaseModelTrainingPipeline:
 if __name__ =="__main__":
     try:
         logger.info(f">>>>>Stage {STAGE_NAME} started <<<<<<<<<<")
-        prepare_base_model=PrepareBaseModelTrainingPipeline
+        prepare_base_model=PrepareBaseModelTrainingPipeline()
         prepare_base_model.main()
         logger.info(f">>>>>>>>> stage {STAGE_NAME} completed <<<<<<<")
     except Exception as e:

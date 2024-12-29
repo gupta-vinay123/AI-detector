@@ -1,0 +1,15 @@
+artifact_uri: file:///D:/AI-detector/mlruns/0/eec0bf7529f84719a6b841c52c02cac0/artifacts
+end_time: 1735406747197
+entry_point_name: ''
+experiment_id: '0'
+lifecycle_stage: active
+run_id: eec0bf7529f84719a6b841c52c02cac0
+run_name: calm-mole-972
+run_uuid: eec0bf7529f84719a6b841c52c02cac0
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1735406738968
+status: 3
+tags: []
+user_id: gupta
